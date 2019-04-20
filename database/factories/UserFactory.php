@@ -13,7 +13,7 @@ use Faker\Generator as Faker;
 | model instances for testing / seeding your application's database.
 |
 */
-
+/** @var TYPE_NAME $factory */
 $factory->define(App\User::class, function (Faker $faker) {
     return [
         'name' => $faker->name,
