@@ -76,13 +76,34 @@ class ReviewController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Review  $review
+     * @param \Illuminate\Http\Request $request
+     * @param Product $product
+     * @param \App\Review $review
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Review $review)
+    public function update(Request $request,Product $product ,Review $review)
     {
-        //
+
+        if ($request->customerName){
+            $request['customer'] = $request->customerName;
+            unset($request['customerName']);
+            $review->update($request->all());
+        }else if ($request->reviewBody){
+            $request['review']= $request->reviewBody;
+            unset($request['reviewBody']);
+            $review->update($request->all());
+        }else if ($request->customerName && $request->reviewBody){
+            $request['customer'] = $request->customerName;
+            $request['review']= $request->reviewBody;
+            unset($request['customerName'],$request['reviewBody']);
+            $review->update($request->all());
+
+        }else{
+            $review->update($request->all());
+        }
+        return \response([
+            'data'=>new ReviewResource($review)
+        ],Response::HTTP_CREATED);
     }
 
     /**
@@ -91,8 +112,10 @@ class ReviewController extends Controller
      * @param  \App\Review  $review
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Review $review)
+    public function destroy(Product $product,Review $review)
     {
-        //
+        $review->delete();
+        return \response(null,Response::HTTP_NO_CONTENT);
+
     }
 }
