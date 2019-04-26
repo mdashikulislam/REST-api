@@ -6,6 +6,7 @@ use App\Exceptions\ProductBelongsToUser;
 use App\Http\Requests\ProductRequest;
 use App\Http\Resources\Product\ProductCollection;
 use App\Http\Resources\Product\ProductResource;
+use App\Http\Resources\ReviewResource;
 use App\Product;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -58,7 +59,7 @@ class ProductController extends Controller
         $product->save();
 
         return response([
-            'data' => new ProductCollection($product)
+            'data' => new ReviewResource($product)
         ],Response::HTTP_CREATED);
 
     }
@@ -83,7 +84,8 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        //
+
+
     }
 
     /**
