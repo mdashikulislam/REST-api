@@ -1,5 +1,6 @@
 <?php
 
+use App\User;
 use Faker\Generator as Faker;
 
 /** @var TYPE_NAME $factory */
@@ -9,6 +10,9 @@ $factory->define(App\Product::class, function (Faker $faker) {
         'detail' => $faker->paragraph,
         'price' => $faker->numberBetween(500,1900),
         'stock' => $faker->randomDigit,
-        'discount' => $faker->numberBetween(5,25)
+        'discount' => $faker->numberBetween(5,25),
+        'user_id'=>function(){
+            return User::all()->random();
+        }
     ];
 });

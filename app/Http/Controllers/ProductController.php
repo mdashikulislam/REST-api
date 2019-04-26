@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\ProductBelongsToUser;
 use App\Http\Requests\ProductRequest;
 use App\Http\Resources\Product\ProductCollection;
 use App\Http\Resources\Product\ProductResource;
 use App\Product;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-
+use Auth;
 class ProductController extends Controller
 {
     /**
@@ -88,31 +89,49 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Product  $product
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Product $product
      * @return \Illuminate\Http\Response
+     * @throws ProductBelongsToUser
      */
     public function update(Request $request, Product $product)
     {
         //
-        $request['detail'] = $request->description;
-        unset($request['description']);
-        $product->update($request->all());
+        $this->productuserCherck($product);
+        if ($request->description){
+            $request['detail'] = $request->description;
+            unset($request['description']);
+            $product->update($request->all());
+        }else{
+            $product->update($request->all());
+        }
+
         return response([
             'data' => new ProductCollection($product)
         ],Response::HTTP_CREATED);
+
+
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Product  $product
+     * @param \App\Product $product
      * @return \Illuminate\Http\Response
+     * @throws ProductBelongsToUser
      */
     public function destroy(Product $product)
     {
         //
+        $this->productuserCherck($product);
         $product->delete();
         return response(null,Response::HTTP_NO_CONTENT);
+    }
+
+    public function productuserCherck($product){
+        if (Auth::id() !== $product->user_id){
+            throw new ProductBelongsToUser;
+        }
+
     }
 }
