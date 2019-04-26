@@ -1,3 +1,25 @@
+![alt text](http://errortechnology.com/myfile/REST-API-Using-Laravel-5.jpg)
+
+## How to Install
+
+Put your project file on C:/xampp/htdocs/(Folder name)
+
+## Database Configuration
+<ul>
+    <li>Go to your .env file and set `DB_DATABASE`=(Database name)</li>
+    <li>Go to Config/database.php and SET `DB_DATABASE`=(Database name)</li>
+</ul>
+
+##Command Installation
+
+<ul>
+    <li>Migration Install Command   `php artisan migrate`   </li>
+    <li>Passport Install Command  `php artisan passport:install` </li>
+</ul>
+
+
+
+
 <p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
 
 <p align="center">
